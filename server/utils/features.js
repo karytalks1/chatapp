@@ -4,11 +4,16 @@ import { v4 as uuid } from "uuid";
 import { v2 as cloudinary } from "cloudinary";
 import { getBase64, getSockets } from "../lib/helper.js";
 
+// In production the client is on another domain, so the cookie must be
+// cross-site (SameSite=None) and therefore Secure. On http://localhost those
+// flags make browsers drop the cookie, so login would silently not stick.
+const isProduction = (process.env.NODE_ENV || "").trim() === "PRODUCTION";
+
 const cookieOptions = {
   maxAge: 15 * 24 * 60 * 60 * 1000,
-  sameSite: "none",
+  sameSite: isProduction ? "none" : "lax",
   httpOnly: true,
-  secure: true,
+  secure: isProduction,
 };
 
 const connectDB = (uri) => {
