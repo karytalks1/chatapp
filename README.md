@@ -35,7 +35,13 @@ npm run dev                 # http://localhost:5173
 
 `client/.env` holds `VITE_SERVER`, the address of the server.
 
-Seed sample users and chats with the scripts in `server/seeders/`.
+Seed sample data (users get the password `password`):
+
+```bash
+cd server
+node seed.js users 10
+node seed.js chats 6
+```
 
 ## What it does
 
