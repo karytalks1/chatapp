@@ -1,0 +1,29 @@
+# Deploy the chat server on Render: New > Blueprint > point at this repo.
+services:
+  - type: web
+    name: chatapp-server
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: node app.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: PRODUCTION          # cookies become SameSite=None; Secure
+      - key: PORT
+        value: 3000
+      - key: MONGO_URI             # MongoDB Atlas connection string
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_SECRET_KEY
+        sync: false
+      - key: CLIENT_URL            # the Vercel URL of the client
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
